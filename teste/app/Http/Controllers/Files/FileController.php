@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 use App\Models\File;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class FileController extends Controller
 {
@@ -46,11 +44,12 @@ class FileController extends Controller
             ], 409);
         }
 
-        Storage::disk('public')->putFileAs('files', $file, $hash);
+        $filename = $hash . '.' . $file->getClientOriginalExtension();
+        Storage::disk('public')->putFileAs('files', $file, $filename);
 
         $this->user()->files()->create([
             'original_name' => $file->getClientOriginalName(),
-            'path' => 'files/' . $hash,
+            'path' => 'files/' . $filename,
             'hash_name' => $hash,
             'extension' => $file->getClientOriginalExtension(),
             'size' => $file->getSize(),
@@ -80,8 +79,7 @@ class FileController extends Controller
         ]);
     }
 
-    ///search/{text}
-    public function search(Request $request, $text) {
+    public function search(Request $request) {
 
     }
 
