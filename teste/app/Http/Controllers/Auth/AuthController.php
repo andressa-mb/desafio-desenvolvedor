@@ -21,7 +21,9 @@ class AuthController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'users' => User::all(),
+        ]);
     }
 
     /**
@@ -78,9 +80,11 @@ class AuthController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(Request $request, User $user)
     {
-        //
+        return response()->json([
+            'user' => new UserResource($user)
+        ]);
     }
 
     /**
