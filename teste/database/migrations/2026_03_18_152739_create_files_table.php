@@ -22,6 +22,7 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
+            $table->string('status')->default('processando');
             $table->timestamps();
         });
     }
