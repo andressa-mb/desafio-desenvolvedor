@@ -10,8 +10,7 @@ class RegisterRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
-    {
+    public function authorize(): bool {
         return true;
     }
 
@@ -20,8 +19,7 @@ class RegisterRequest extends FormRequest
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
-    {
+    public function rules(): array {
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
@@ -29,7 +27,7 @@ class RegisterRequest extends FormRequest
         ];
     }
 
-    public function messages() : array{
+    public function messages() : array {
         return [
             'name.required' => 'Nome é obrigatório.',
             'name.max' => 'Nome deve ter no máximo 255 caracteres.',

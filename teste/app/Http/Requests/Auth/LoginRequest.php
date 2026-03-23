@@ -10,8 +10,7 @@ class LoginRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
-    {
+    public function authorize(): bool {
         return true;
     }
 
@@ -27,7 +26,7 @@ class LoginRequest extends FormRequest
         ];
     }
 
-    public function messages() : array{
+    public function messages(): array {
         return [
             'email.required' => 'E-mail obrigatório.',
             'email.email' => 'Deve ser um e-mail válido.',
