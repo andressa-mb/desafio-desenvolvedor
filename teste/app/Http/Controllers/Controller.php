@@ -9,6 +9,6 @@ use Illuminate\Support\Facades\Auth;
 abstract class Controller extends BaseController
 {
     public function user(): User {
-        return Auth::user();
+        return Auth::user() ?? abort(401);
     }
 }

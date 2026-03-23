@@ -13,7 +13,7 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:sanctum')->except(['register', 'login']);
+        $this->middleware('auth:api')->except(['register', 'login']);
     }
 
     /**
@@ -22,8 +22,8 @@ class AuthController extends Controller
     public function index()
     {
         return response()->json([
-            'users' => User::all(),
-        ]);
+            'users' => User::get()
+        ], 200);
     }
 
     /**
@@ -38,12 +38,7 @@ class AuthController extends Controller
         ]);
 
         Auth::login($user);
-        $tkn = $request->user()->createToken('access')->plainTextToken;
-
-        return response()->json([
-            'user' => new UserResource($user),
-            'token' => $tkn
-        ]);
+        return response()->json($this->user());
     }
 
     /**
@@ -53,27 +48,27 @@ class AuthController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
-        if(!Auth::attempt($credentials)){
-            return response()->json(['message' => 'Credenciais inválidas'], 401);
+        if (!$token = Auth::attempt($credentials)) {
+            return response()->json([
+                'message' => 'Credenciais inválidas'
+            ], 401);
         }
 
-        $tkn = $request->user()->createToken('access')->plainTextToken;
-
         return response()->json([
-            'message' => "Logado. Bem vindo - {$request->user()->name}",
-            'token' => $tkn
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'user' => $this->user()
         ]);
     }
 
     /**
-     * Logout in the system
+     * Logout system
      */
-    public function logout(Request $request)
-    {
-        $request->user()->currentAccessToken()->delete();
+    public function logout() {
+        Auth::logout();
 
         return response()->json([
-            'message' => 'Usuário deslogado com sucesso.'
+            'message' => 'Logout realizado com sucesso'
         ]);
     }
 

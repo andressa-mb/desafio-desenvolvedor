@@ -20,11 +20,18 @@ class LoginRequest extends FormRequest
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
-    {
+    public function rules(): array {
         return [
             'email' => 'required|email',
             'password' => 'required|string',
+        ];
+    }
+
+    public function messages() : array{
+        return [
+            'email.required' => 'E-mail obrigatório.',
+            'email.email' => 'Deve ser um e-mail válido.',
+            'password.required' => 'Senha é obrigatório.',
         ];
     }
 }
